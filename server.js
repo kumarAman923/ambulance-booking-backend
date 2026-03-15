@@ -14,17 +14,40 @@ connectDB();
 
 const app = express();
 const server = http.createServer(app); // ✅ server banaya
-const io = socketIo(server, { // ✅ socket.io attach kiya
+// const io = socketIo(server, { // ✅ socket.io attach kiya
+  // cors: {
+  //    origin: ["http://localhost:3000", "http://localhost:5173"],  // tumhara frontend URL
+  //   methods: ["GET", "POST"],
+  //   credentials: true
+  // }
+//   const io = socketIo(server, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"]
+//   }
+// });
+//    transports: ['websocket', 'polling']
+// });
+
+const io = socketIo(server, {
   cors: {
-     origin: ["http://localhost:3000", "http://localhost:5173"],  // tumhara frontend URL
-    methods: ["GET", "POST"],
-    credentials: true
-  }
-  //  transports: ['websocket', 'polling']
+    origin: "*",
+    methods: ["GET", "POST"]
+  },
+  transports: ["websocket", "polling"]
 });
 
+
+
+
 // middleware
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET","POST","PUT","DELETE"]
+}));
+
+
 app.use(express.json());
 
 // ✅ socket.io instance ko app mein store karo
